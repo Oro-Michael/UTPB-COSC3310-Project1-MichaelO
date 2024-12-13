@@ -42,7 +42,7 @@ public class UInt {
         bits = new boolean[length];
 
         // Convert the integer to binary and store each bit in the array.
-        for (int b = length-1; b >= 0; b--) {
+        for (int b = length - 1; b >= 0; b--) {
             // We use a ternary to decompose the integer into binary digits, starting with the 1s place.
             bits[b] = i % 2 == 1;
             // Right shift the integer to process the next bit.
@@ -50,7 +50,7 @@ public class UInt {
 
             // Deprecated analog method
             /*int p = 0;
-            while (Math.pow(2, p) < i) {
+            while (Math.pow(2,p) < i) {
                 p++;
             }
             p--;
@@ -165,26 +165,37 @@ public class UInt {
     }
 
     public void or(UInt u) {
-        // TODO Complete the bitwise logical OR method
-        return;
+        for (int i = 0; i < Math.min(this.length, u.length); i++) {
+            this.bits[this.length - i - 1] =
+                    this.bits[this.length - i - 1] |
+                            u.bits[u.length - i - 1];
+        }
+        return;        // TODO Complete the bitwise logical OR method
     }
 
     public static UInt or(UInt a, UInt b) {
-        // TODO Complete the static OR method
-        return null;
+        UInt temp = a.clone();
+        temp.or(b);
+        return temp;        // TODO Complete the static OR method
     }
 
     public void xor(UInt u) {
-        // TODO Complete the bitwise logical XOR method
-        return;
+        for (int i = 0; i < Math.min(this.length, u.length); i++) {
+            this.bits[this.length - i - 1] =
+                    this.bits[this.length - i - 1] ^
+                            u.bits[u.length - i - 1];
+        }
+        return;        // TODO Complete the bitwise logical XOR method
     }
 
     public static UInt xor(UInt a, UInt b) {
-        // TODO Complete the static XOR method
-        return null;
+        UInt temp = a.clone();
+        temp.xor(b);
+        return temp;        // TODO Complete the static XOR method
     }
 
     public void add(UInt u) {
+
         // TODO Using a ripple-carry adder, perform addition using a passed UINT object
         // The result will be stored in this.bits
         // You will likely need to create a couple of helper methods for this.
@@ -194,8 +205,9 @@ public class UInt {
     }
 
     public static UInt add(UInt a, UInt b) {
-        // TODO A static change-safe version of add, should return a temp UInt object like the bitwise ops.
-        return null;
+        UInt temp = a.clone();
+        temp.add(b);
+        return temp;        // TODO A static change-safe version of add, should return a temp UInt object like the bitwise ops.
     }
 
     public void negate() {
@@ -211,8 +223,9 @@ public class UInt {
     }
 
     public static UInt sub(UInt a, UInt b) {
-        // TODO And a static change-safe version of sub
-        return null;
+        UInt temp = a.clone();
+        temp.sub(b);
+        return temp;        // TODO And a static change-safe version of sub
     }
 
     public void mul(UInt u) {
@@ -226,7 +239,26 @@ public class UInt {
     }
 
     public static UInt mul(UInt a, UInt b) {
-        // TODO A static, change-safe version of mul
-        return null;
+        UInt temp = a.clone();
+        temp.mul(b);
+        return temp;        // TODO A static, change-safe version of mul
     }
+    //methods
+   /* public void Safesub(UInt other) {
+        int maxLength = Math.max(this.length, other.length); //pad short one
+
+        boolean[] extendedBitsA = new boolean[maxLength]; //new array with pad
+        boolean[] extendedBitsB = new boolean[maxLength];
+            System.arraycopy(this.bits, 0, extendedBitsA, maxLength - this.length, this.length);
+            System.arraycopy(other.bits, 0, extendedBitsB, maxLength - other.length, other.length);   // Copy the current bits into extended arrays, padding with false (0) if necessary
+        // perform the subtraction with borrow
+        boolean borrow = false;
+        for (int i = maxLength - 1; i >= 0; i--) {
+            boolean bitA = extendedBitsA[i];
+            boolean bitB = extendedBitsB[i];
+            // subtract bits considering borrow
+            this.bits[i] = bitA ^ bitB ^ borrow; // using xor for subtraction
+            borrow = (!bitA && (bitB || borrow)) ? true : false; // borrow logic
+        }
+    } */
 }
